@@ -1,43 +1,61 @@
 <?php
 
+
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User implements \JsonSerializable
 {
-    use HasFactory, Notifiable;
+    private $username;
+    private $password;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * User constructor.
+     * @param $username
+     * @param $password
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    public function __construct($username, $password)
+    {
+        $this->username = $username;
+        $this->password = $password;
+    }
+
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * @return mixed
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @param mixed $username
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function setUsername($username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
+
+    public function jsonSerialize()
+    {
+       return get_object_vars($this);
+    }
 }
